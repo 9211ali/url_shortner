@@ -1,5 +1,7 @@
 class LinksController < ApplicationController
 
+  before_action :set_link, only: [:show]
+
   def index
     @links = Link.recent_first
   end
@@ -17,5 +19,9 @@ class LinksController < ApplicationController
 
    def links_params
     params.require(:link).permit(:url, :title, :description, :views_count)
+   end
+
+   def set_link
+     @link = Link.find params[:id]
    end
 end
