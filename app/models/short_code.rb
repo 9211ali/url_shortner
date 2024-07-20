@@ -14,6 +14,12 @@ class ShortCode
     base62
   end
 
-  def self.decode(value)
+  def self.decode(base62)
+    number = 0
+    base62.each_char.with_index do |char, index|
+      power = base62.length - (index + 1)
+      number += CHARSET.index(char) * (BASE ** power)
+    end
+    number
   end
 end
