@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_20_094921) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_20_202407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,9 +18,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_20_094921) do
     t.string "title"
     t.string "description"
     t.string "url"
-    t.integer "views_count"
+    t.integer "views_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "views", force: :cascade do |t|
+    t.string "ip"
+    t.string "user_agent"
+    t.bigint "link_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["link_id"], name: "index_views_on_link_id"
+  end
+
+  add_foreign_key "views", "links"
 end
