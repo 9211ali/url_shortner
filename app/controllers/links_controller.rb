@@ -20,8 +20,4 @@ class LinksController < ApplicationController
    def links_params
     params.require(:link).permit(:url, :title, :description, :views_count)
    end
-
-   def set_link
-     @link = Link.find params[:id]
-   end
 end
