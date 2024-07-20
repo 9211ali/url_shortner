@@ -1,0 +1,16 @@
+<div>
+  <h1 class="font-bold text-4xl">URL SHORTNER</h1>
+  <div class="flex gap-2 items-center">
+    <%= form_with model: Link.new do |f| %>
+      <%= f.text_field :url, placeholder: 'https://example.com', class: "flex-grow rounded", required: true %>
+      <%= f.button 'Save', class: "px-3 py-2 bg-gray-100 rounded" %>
+    <% end %>
+  </div>
+</div>
+
+<br><br>
+
+<h2>Generated Links</h2>
+
+<%= render @links %>
+
