@@ -1,23 +1,24 @@
 class LinksController < ApplicationController
 
   before_action :set_link, only: [ :show, :edit, :update, :destroy ]
-  
+
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to root_path, notice: "Couldn't find the link to the application"
   end
 
-  def new
+  def index
+    @links = Link.recent_first
     @link = Link.new
   end
 
-  def index
-    @links = Link.recent_first
-  end
-
   def create
-    @link = Link.new links_params
+    @link = Link.new(links_params)
     if @link.save
-      redirect_to root_path
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        # format.turbo_stream { render turbo_stream: [turbo_stream.prepend('links', @link), turbo_stream.replace("link_form", partial: 'links/form', locals: { link: Link.new })] }
+        format.turbo_stream { render turbo_stream: turbo_stream.prepend('links', @link) }
+      end
     else
       render :index, status: :unprocessable_entity
     end
