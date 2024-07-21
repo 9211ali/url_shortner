@@ -16,7 +16,7 @@
       <%= link_to pluralize(link.views.count, 'view'), link, class: 'bg-gray-100 rounded px-2 py-2 no-underline' %>
     </div>
     <div class="text-xs text-center">
-      <%= link_to "Copy", link, class: 'px-2 py-2 rounded bg-gray-100 no-underline' %>
+      <%= button_tag "Copy", class: 'font-medium px-2 py-2 rounded bg-gray-100 no-underline', data: { controller: 'clipboard', clipboard_text: view_url(link) } %>
     </div>
   </div>
 <% end %>

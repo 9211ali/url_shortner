@@ -1,6 +1,7 @@
 <div class="flex justify-between items-center text-xs">
   <%= link_to 'Back to all Links', root_path, class: 'no-underline text-xs px-4 py-2 rounded bg-gray-100' %>
   <%= tag.div pluralize(@link.views.count, 'view'), class: 'px-4' %>
+  <%= button_tag "Copy", class: 'font-medium px-2 py-2 rounded bg-gray-100 no-underline', data: { controller: 'clipboard', clipboard_text: view_url(@link) } %>
   <%= link_to "Edit", edit_link_path(@link), class: 'px-2 py-2 rounded bg-gray-100 no-underline' %>
 </div>
 
