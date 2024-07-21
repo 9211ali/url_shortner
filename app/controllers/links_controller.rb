@@ -1,18 +1,22 @@
 class LinksController < ApplicationController
 
   before_action :set_link, only: [ :show, :edit, :update, :destroy ]
+  before_action :check_if_editable, only: [ :edit, :update, :destroy ]
 
   rescue_from ActiveRecord::RecordNotFound do
     redirect_to root_path, notice: "Couldn't find the link to the application"
   end
 
   def index
-    @links = Link.recent_first
-    @link = Link.new
+    @pagy, @links = pagy(Link.recent_first)
+    @link ||= Link.new
+    rescue Pagy::OverflowError
+      params[:page] = 1
+      retry
   end
 
   def create
-    @link = Link.new(links_params)
+    @link = Link.new(links_params.merge(user_id: current_user&.id))
     if @link.save
       respond_to do |format|
         format.html { redirect_to root_path }
@@ -22,12 +26,6 @@ class LinksController < ApplicationController
     else
       render :index, status: :unprocessable_entity
     end
-  end
-
-  def show
-  end
-
-  def edit
   end
 
   def update
@@ -47,5 +45,11 @@ class LinksController < ApplicationController
 
    def links_params
     params.require(:link).permit(:url, :title, :description, :views_count)
+   end
+
+   def check_if_editable
+     unless @link.editable_by?(current_user)
+       redirect_to @link, alert: 'You are not allowed to edit'
+     end
    end
 end

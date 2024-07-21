@@ -1,7 +1,9 @@
-<h1 class="font-bold text-4xl">URL SHORTNER</h1>
-
 <%= render partial: 'form', locals: { link: Link.new } %>
 
 <div id="links" class="mt-8 flex flex-col gap-4 divide-y divide-gray-100">
   <%= render @links %>
+
+  <div class="mt-8 mb-16 text-center">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
 </div>
