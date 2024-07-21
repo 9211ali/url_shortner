@@ -13,4 +13,8 @@ class Link < ApplicationRecord
   def self.find(id)
     super ShortCode.decode(id)
   end
+
+  def domain
+    URI(url).host rescue nil
+  end  
 end
